@@ -32,9 +32,10 @@ This will recursively go through all the Markdown files in that folder and its s
 
 For a directory tree like:
 
+```css
 Test
 └── test.md
-
+```
 
 The `test.md` file will get a tag `#Test` appended to the top.
 
@@ -42,10 +43,12 @@ The `test.md` file will get a tag `#Test` appended to the top.
 
 For a more complex directory tree like:
 
+```css
 Test
 └── Testing
 ├── test.md
 └── testing.md
+```
 
 Both `test.md` and `testing.md` will get tags `#Test #Testing` appended to the top like this: 
 
