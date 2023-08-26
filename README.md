@@ -28,6 +28,37 @@ python tagger.py /path/to/root/folder
 
 This will recursively go through all the Markdown files in that folder and its subfolders, appending or updating a tag section to each.
 
+### Example 1
+
+For a directory tree like:
+
+Test
+└── test.md
+
+
+The `test.md` file will get a tag `#Test` appended to the top.
+
+### Example 2
+
+For a more complex directory tree like:
+
+Test
+└── Testing
+├── test.md
+└── testing.md
+
+Both `test.md` and `testing.md` will get tags `#Test #Testing` appended to the top like this: 
+
+```markdown
+
+#### Tags
+#Testing #Test
+
+----
+
+
+```
+
 ### Advanced Usage
 
 Feel free to modify the script to suit your specific needs. The script is structured in a modular way, making it easy to adapt for more specialized tagging logic.
