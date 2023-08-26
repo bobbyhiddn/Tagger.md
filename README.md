@@ -46,8 +46,8 @@ For a more complex directory tree like:
 ```css
 Test
 └── Testing
-├── test.md
-└── testing.md
+    ├── test.md
+    └── testing.md
 ```
 
 Both `test.md` and `testing.md` will get tags `#Test #Testing` appended to the top like this: 
