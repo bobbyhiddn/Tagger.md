@@ -79,8 +79,14 @@ This will add 'tag1' and 'tag2' to all files, in addition to the directory-based
 
 ### Apologies 
 
-For those who used the first version and want to switch over, I wrote a script called cleanup.py. It will remove the #### Tags section from all files in a directory tree. It's not pretty, but it works. Here is the usage:
+For those who used the first version and want to switch over, I wrote a script called cleanup_scripts/cleanup.py. It will remove the #### Tags section from all files in a directory tree. It's not pretty, but it works. Here is the usage:
 
 ```bash
 python cleanup.py /path/to/root/folder
+```
+
+If you ran a version of the script that added duplicate frontmatters and want to start over, run cleanup_scripts/cleanup_dupes.py. This will clear all frontmatter from all files in a directory tree. Here is the usage:
+
+```bash
+python cleanup_dupes.py /path/to/root/folder
 ```
