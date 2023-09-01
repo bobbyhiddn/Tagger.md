@@ -9,15 +9,13 @@ def find_front_matter(lines):
     for i, line in enumerate(lines):
         stripped_line = line.strip()
         if stripped_line == "---":
-            in_front_matter = not in_front_matter
-            if not in_front_matter:
-                return front_matter
+            if in_front_matter:  # end of front matter
+                return front_matter, i
+            else:  # start of front matter
+                in_front_matter = True
         elif in_front_matter:
-            # If the line contains a special character, return None
-            if ":" in line or "?" in line or "`" in line:
-                return None
             front_matter.append(line)
-    return None
+    return None, 0
 
 def tag_file(file_path, tags):
     print(f"Processing file: {file_path}")  # print file path
@@ -29,10 +27,8 @@ def tag_file(file_path, tags):
         logging.error(f"Unable to open file {file_path}: {e}")
         return
 
-    front_matter = find_front_matter(lines)
+    front_matter, front_matter_end_line = find_front_matter(lines)
     if front_matter is not None:
-        # Escape special characters in front matter
-        front_matter = [line.replace(':', '\:').replace('?', '\?').replace('`', '\`') for line in front_matter]
         try:
             front_matter_yaml = yaml.safe_load("\n".join(front_matter))
         except yaml.YAMLError as e:
@@ -47,7 +43,7 @@ def tag_file(file_path, tags):
         else:
             front_matter_yaml['tags'] = list(unique_tags)
         new_front_matter = yaml.safe_dump(front_matter_yaml)
-        lines = lines[len(front_matter)+2:]  # remove old front matter
+        lines = lines[front_matter_end_line+1:]  # remove old front matter
     else:
         # If no front matter, create a new one
         front_matter_yaml = {'tags': list(unique_tags)}
@@ -59,7 +55,7 @@ def tag_file(file_path, tags):
             f.writelines(lines)
     except IOError as e:
         logging.error(f"Unable to write to file {file_path}: {e}")
-
+        
 def tag_markdown_files(folder_path, tags=[]):
     root_folder_name = os.path.basename(os.path.abspath(folder_path)).replace(" ", "")
     current_tags = tags + [root_folder_name]
