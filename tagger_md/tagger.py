@@ -1,9 +1,7 @@
 import os
-import sys
 import argparse
 import logging
 import yaml
-from pathlib import Path
 
 def find_front_matter(lines):
     front_matter = []
@@ -15,6 +13,9 @@ def find_front_matter(lines):
             if not in_front_matter:
                 return front_matter
         elif in_front_matter:
+            # If the line contains a special character, return None
+            if ":" in line or "?" in line or "`" in line:
+                return None
             front_matter.append(line)
     return None
 
@@ -30,6 +31,8 @@ def tag_file(file_path, tags):
 
     front_matter = find_front_matter(lines)
     if front_matter is not None:
+        # Escape special characters in front matter
+        front_matter = [line.replace(':', '\:').replace('?', '\?').replace('`', '\`') for line in front_matter]
         try:
             front_matter_yaml = yaml.safe_load("\n".join(front_matter))
         except yaml.YAMLError as e:
@@ -56,7 +59,7 @@ def tag_file(file_path, tags):
             f.writelines(lines)
     except IOError as e:
         logging.error(f"Unable to write to file {file_path}: {e}")
-        
+
 def tag_markdown_files(folder_path, tags=[]):
     root_folder_name = os.path.basename(os.path.abspath(folder_path)).replace(" ", "")
     current_tags = tags + [root_folder_name]
